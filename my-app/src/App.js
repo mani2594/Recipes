@@ -12,7 +12,8 @@ class App extends Component {
     deatils_id:35389,
     pageIndex:1,
     search:'',
-    query:'&q='
+    query:'&q=',
+    error:''
   };
 
   // async getRecipes(){
@@ -20,10 +21,18 @@ class App extends Component {
   //   try{
   //   const data= await fetch(this.state.url);
   //   const jsonData = await data.json();
+  //     if(jsonData.recipes.length ===0){
+  //       this.setState(()=>{
+  //       return{error:'sorry,search recipesis not available'}
+  //       })
+  //     }
+  //     else{
+  //       this.setState(()=>{
+  //        return{ recipes: jsonData.recipes}
+  //       })
 
-  //   this.setState({
-  //     recipes: jsonData.recipes
-  //   });
+  //     }
+    
   // }
   // catch(e){console.log(e);}
   // }
@@ -39,7 +48,8 @@ class App extends Component {
         handleDetails={this.handleDetails}
         value={this.state.search}
         handleChange={this.handleChange}
-        handleSubmit={this.handleSubmit}/>
+        handleSubmit={this.handleSubmit}
+        error={this.state.error}/>
       case 0:
         return (<RecipeDetails id={this.state.deatils_id} 
         handleIndex={this.handleIndex}/>);
@@ -65,7 +75,12 @@ handleChange=(e)=>{
 } 
 handleSubmit=(e)=>{
   e.preventDefault();
-  
+  const{base_url,query,search}=this.state;
+  this.setState(()=>{
+    return{url:'${base_url}$(query}${search}',search:""}
+  },()=>{
+    this.getRecipes();
+  })
 }
  render() {
     // console.log(this.state.recipes);
